@@ -140,7 +140,9 @@ def _build_sam(
             print(checkpoint.name, " is downloaded!")
 
     if checkpoint is not None:
+        # Check if CUDA is available and set map_location accordingly
+        map_location = 'cuda' if torch.cuda.is_available() else 'cpu'
         with open(checkpoint, "rb") as f:
-            state_dict = torch.load(f)
+            state_dict = torch.load(f, map_location=map_location)
         sam.load_state_dict(state_dict)
     return sam
